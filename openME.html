@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive chick Page</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #FFF9C4; /* Soft yellow background */
+            text-align: center;
+        }
+        .chick {
+            width: 150px;
+            margin: 20px auto;
+            animation: float 3s ease-in-out infinite;
+        }
+        h1 {
+            color: #F48FB1; /* Soft pink */
+            font-size: 2em;
+        }
+        button {
+            background-color: #FADADD; 
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #FFC0CB; /* Slightly darker pink */
+        }
+        #no {
+            position: relative;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        @keyframes jump {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+        .sparkles {
+            display: none;
+            animation: sparkle 1s ease-in-out infinite;
+            font-size: 2em;
+            color: #FFC0CB; /* Soft sparkle pink */
+        }
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+        #angryMessage {
+            color: #FF0000;
+            font-weight: bold;
+            font-size: 1.5em;
+            text-transform: uppercase;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- First page: Greeting -->
+    <div id="page1">
+        <br>
+        <img src="https://i.pinimg.com/originals/4e/8f/c5/4e8fc57d53c79bd9c4b110fc1c761263.gif" alt="Cartoon chick" class="chick">
+        <h1>Hello ^-^, how have you been Darling?</h1>
+        <button id="good">Good</button>
+        <button id="notBad">Not Bad</button>
+    </div>
+
+    <!-- Second page: Reaction to how Khadija feels -->
+    <div id="page2" style="display:none;">
+        <br>
+        <img src="https://i.pinimg.com/originals/44/68/80/4468804ef4c0ecf91e86e3a7bfefe898.gif" alt="Happy chick" id="chickReaction" class="chick">
+        <h1 id="reactionMessage"></h1>
+        <p>Click the duck!</p>
+    </div>
+
+    <!-- Third page: Asking for project collaboration -->
+    <div id="page3" style="display:none;">
+        <br>
+        <img src="https://i.pinimg.com/originals/80/9e/aa/809eaa6d6592ed87028af4bca27f4a94.gif" alt="question" class="chick">
+        <h1>Do you love me? </h1>
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+
+    <!-- Fourth page: Celebration if Yes -->
+    <div id="page4" style="display:none;">
+        <br>
+        <img src="https://i.pinimg.com/originals/08/95/c8/0895c86a08a93faafbff84cc23a0c9a9.gif" alt="Jumping Happy chick" id="happychick" class="chick">
+        <h1>Yoaaaaaaay! Love you tooo babe! Come for a hug!</h1>
+        <div class="sparkles">✨✨✨</div>
+    </div>
+
+    <!-- Fifth page: Angry message after too many No attempts -->
+    <div id="page5" style="display:none;">
+        <br>
+        <img src="https://i.pinimg.com/736x/3e/80/06/3e800625c4f2d9a00fa94159068e41f1.jpg" alt="Angry chick" class="chick">
+        <h1 id="angryMessage">SERIOUSLY NOW? CLICK THE YES ALREADY!!!</h1>
+        <button id="finalYes">FINE, I LOVE YOU!</button>
+    </div>
+
+    <script>
+        const goodButton = document.getElementById('good');
+        const notBadButton = document.getElementById('notBad');
+        const reactionMessage = document.getElementById('reactionMessage');
+        const chickReaction = document.getElementById('chickReaction');
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+        const happychick = document.getElementById('happychick');
+        const sparkles = document.querySelector('.sparkles');
+        const finalYesButton = document.getElementById('finalYes');
+
+        let noButtonHoverCount = 0;
+
+        // First page interactions
+        goodButton.addEventListener('click', () => {
+            chickReaction.src = "https://i.pinimg.com/originals/9c/3b/2f/9c3b2fb69ba8b6f8056055d41898d600.gif";
+            reactionMessage.innerText = "Glad to hear that!";
+            goToPage(2);
+        });
+
+        notBadButton.addEventListener('click', () => {
+            chickReaction.src = "https://i.pinimg.com/originals/5f/ba/42/5fba42e46672d833ffc2fa1f6ca4c401.gif";
+            reactionMessage.innerText = "Hope you get well soon!";
+            goToPage(2);
+        });
+
+        // Click anywhere on the second page to go to the third page
+        document.getElementById('page2').addEventListener('click', () => {
+            goToPage(3);
+        });
+
+        // Yes/No buttons on project invite
+        yesButton.addEventListener('click', () => {
+            happychick.style.animation = 'jump 1s ease-in-out infinite';
+            sparkles.style.display = 'block';
+            goToPage(4);
+        });
+
+        // Make "no" button run away
+        noButton.addEventListener('mouseover', () => {
+            noButton.style.position = 'absolute';
+            noButton.style.top = `${Math.random() * 80 + 10}%`;
+            noButton.style.left = `${Math.random() * 80 + 10}%`;
+            
+            noButtonHoverCount++;
+            
+            // After 4 attempts, go to angry page
+            if (noButtonHoverCount > 4) {
+                goToPage(5);
+            }
+        });
+
+        // Final yes button on angry page
+        finalYesButton.addEventListener('click', () => {
+            goToPage(4); // Go to the happy page
+        });
+
+        // Function to navigate between pages
+        function goToPage(pageNum) {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'none';
+            document.getElementById('page3').style.display = 'none';
+            document.getElementById('page4').style.display = 'none';
+            document.getElementById('page5').style.display = 'none';
+            document.getElementById(`page${pageNum}`).style.display = 'block';
+            
+            // Reset animation if going to happy page
+            if (pageNum === 4) {
+                happychick.style.animation = 'jump 1s ease-in-out infinite';
+                sparkles.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
